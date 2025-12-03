@@ -9,5 +9,5 @@
   <h2>ID товара: {{ product.id }}</h2>
   <h3>{{ product.product_name }}</h3>
   <p>{{ product.about_item }}</p>
-  <p>{{ product.created_at }}</p>
+  <p>{{ product.created_at|date:"d.m.Y H:i" }}</p>
 {% endblock page_content %}
