@@ -20,8 +20,8 @@ def get_product_detail(request, product_id):
 
 
 def create_product(request):
+  form = ProductForm(request.POST or None)
   if request.method == "POST":
-    form = ProductForm(request.POST)
 
     if form.is_valid():
       product = Products.objects.create(
@@ -31,11 +31,7 @@ def create_product(request):
 
 
       return redirect('product_detail', product_id=product.id)
-    else:
-      return render(request, 'store/product_add.html', {"form": form})
-  
-  # GET
-  form = ProductForm()
+    # Если форма невалидна, продолжим к render ниже.
   
   return render(request, 'store/product_add.html', {"form": form})
 
