@@ -19,9 +19,6 @@ def get_product_detail(request, product_id):
 
 
 def create_product(request):
-  if request.method == "GET":
-    return render(request, 'store/product_add.html')
-  
   if request.method == "POST":
     title = request.POST.get('title').strip()
     text = request.POST.get('text').strip()
@@ -45,4 +42,6 @@ def create_product(request):
       }
 
       return render(request, 'store/product_add.html', context)
+  
+  return render(request, 'store/product_add.html')
 
