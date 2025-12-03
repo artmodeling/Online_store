@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block page_title %}Добавить товар{% endblock page_title %}
+
+{% block page_content %}
+    <h1>Добавить новый товар</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div>
+            <label for="titleInput">Наименование товара:</label>
+            <input id="titleInput" name="title" type="text" placeholder="заголовок (максимальная длина 200 символов)" required>
+        </div>
+
+        <div>
+            <label for="textInput">Подробнее о товаре:</label>
+            <textarea id="textInput" name="text" rows="3"></textarea>
+        </div>
+
+        <button type="submit">Создать</button>
+    </form>
+{% endblock page_content %}
