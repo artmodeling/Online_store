@@ -23,6 +23,26 @@ def create_product(request):
     return render(request, 'store/product_add.html')
   
   if request.method == "POST":
-    product = Products.objects.create(product_name=request.POST.get('title'), about_item=request.POST.get('text'))
+    title = request.POST.get('title').strip()
+    text = request.POST.get('text').strip()
 
-    return redirect('product_detail', product_id=product.id)
+    errors = {}
+
+    if not title:
+      errors['title'] = 'Наименование товара необходимо заполнить.'
+    if not text:
+      errors['text'] = 'Описание товара обязателено нужно указать.'
+
+    if not errors:
+      product = Products.objects.create(product_name=title, about_item=text)
+
+      return redirect('product_detail', product_id=product.id)
+    else:
+      context = {
+        'errors': errors,
+        'title': title,
+        'text': text
+      }
+
+      return render(request, 'store/product_add.html', context)
+
