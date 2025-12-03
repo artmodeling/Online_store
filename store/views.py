@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
 from store.models import Products
+from store.forms import ProductForm
 
 # "request" в скобках указывать обязательно, можно поставить другое слово, 
 # но лучше "request".
@@ -20,28 +21,22 @@ def get_product_detail(request, product_id):
 
 def create_product(request):
   if request.method == "POST":
-    title = request.POST.get('title').strip()
-    text = request.POST.get('text').strip()
+    form = ProductForm(request.POST)
 
-    errors = {}
+    if form.is_valid():
+      product = Products.objects.create(
+      product_name=form.cleaned_data['title'],
+      about_item=form.cleaned_data['text']
+      )
 
-    if not title:
-      errors['title'] = 'Наименование товара необходимо заполнить.'
-    if not text:
-      errors['text'] = 'Описание товара обязателено нужно указать.'
-
-    if not errors:
-      product = Products.objects.create(product_name=title, about_item=text)
 
       return redirect('product_detail', product_id=product.id)
     else:
-      context = {
-        'errors': errors,
-        'title': title,
-        'text': text
-      }
-
-      return render(request, 'store/product_add.html', context)
+      return render(request, 'store/product_add.html', {"form": form})
   
-  return render(request, 'store/product_add.html')
+  # GET
+  form = ProductForm()
+  
+  return render(request, 'store/product_add.html', {"form": form})
+
 
